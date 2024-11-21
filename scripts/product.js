@@ -32,27 +32,30 @@ const generateProductContent = ({
   const contentEl = document.querySelector(".product-details");
   const stars = generateRateStars(rating.rate);
 
-  contentEl.innerHTML = `<div class="d-flex gap-5">
-  <img src="${image}" class="img-fluid w-50" alt="...">
-  <div class="d-flex flex-column flex-1 gap-3 mt-5">
-    <div>
-      <h2 class="h2 m-0">${title}</h2>
-      <small class="text-body-secondary">${category}</small>
+  contentEl.innerHTML = `<div class="container d-flex gap-5">
+  <div class="row">
+    <div class="col-sm-6 col-md-5 text-center">
+      <img src="${image}" class="img-fluid w-75" alt="...">
     </div>
-    <p>${description}</p>
-    <div class="d-flex justify-content-between">
-      <span class="badge text-bg-primary fs-4">$${price}</span>
-      <div class="d-flex gap-3 align-items-center">${stars}
-        <span class="fs-4">${rating.rate}/${rating.count}</span>
+    <div class="d-flex flex-column flex-1 gap-3 mt-5 col-sm-6 col-md-7">
+      <div class="d-flex flex-wrap gap-3 justify-content-between">
+        <span class="badge text-bg-primary fs-4">$${price}</span>
+        <div class="d-flex gap-3 align-items-center">${stars}
+          <span class="fs-4">${rating.rate}/${rating.count}</span>
+        </div>
+      </div>
+      <div>
+        <h2 class="h2 m-0">${title}</h2>
+        <small class="text-body-secondary">${category}</small>
+      </div>
+      <p>${description}</p>
+      <div>
+        <button id="add-to-cart" class="btn btn-secondary mt-3">
+          <i class="bi bi-cart3"></i> Add to cart
+        </button>
       </div>
     </div>
-    <div>
-      <button id="add-to-cart" class="btn btn-secondary mt-3">
-        <i class="bi bi-cart3"></i> Add to cart
-      </button>
-    </div>
   </div>
-
 </div>`;
 
   const addToCartEl = document.getElementById("add-to-cart");

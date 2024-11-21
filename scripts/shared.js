@@ -4,6 +4,16 @@ const shoppingCartContainerEl = document.getElementById(
   "shopping-cart-icon-container"
 );
 const cartBodyEl = document.getElementById("cart-body");
+const menuIconEl = document.getElementById("menu-icon");
+
+menuIconEl.addEventListener("click", () => {
+  const mobileNavigationEl = document.querySelector(".mobile-navigation");
+  if (!mobileNavigationEl.style.display) {
+    mobileNavigationEl.style.display = "block";
+  } else {
+    mobileNavigationEl.style.display = "";
+  }
+});
 
 const logout = () => {
   localStorage.removeItem("token");
