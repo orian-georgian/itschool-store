@@ -69,8 +69,22 @@ const createLine = ({ image, title, price, counter, id }, containerEl) => {
       (product) => product.id !== id
     );
 
+    const productsByCount = restOfProducts.reduce((acc, item) => {
+      const index = acc.findIndex((product) => product.id === item.id);
+
+      if (index === -1) {
+        acc.push({ ...item, counter: 1 });
+      } else {
+        acc[index].counter += 1;
+      }
+      return acc;
+    }, []);
+
     localStorage.setItem("shoppingCartList", JSON.stringify(restOfProducts));
     lineEl.remove();
+    createCartCounter();
+    buildTotal(productsByCount);
+    buildFinalizeButton();
   });
 
   lineEl.appendChild(deleteLineEl);
@@ -91,6 +105,10 @@ const buildTotal = (products) => {
 
   if (createdTotalContainerEl) {
     createdTotalContainerEl.remove();
+
+    if (products.length === 0) {
+      return;
+    }
   }
 
   totalContainerEl.setAttribute(
@@ -103,6 +121,33 @@ const buildTotal = (products) => {
   `;
 
   cartBodyEl.appendChild(totalContainerEl);
+};
+
+const buildFinalizeButton = () => {
+  const createdPlaceOrderButtonEl = document.querySelector(".place-order-btn");
+  const localStorageProducts = localStorage.getItem("shoppingCartList");
+  const productsInCart = localStorageProducts
+    ? JSON.parse(localStorageProducts).length
+    : 0;
+
+  if (createdPlaceOrderButtonEl) {
+    createdPlaceOrderButtonEl.remove();
+
+    if (productsInCart === 0) {
+      return;
+    }
+  }
+
+  const placeOrderButtonEl = document.createElement("button");
+
+  placeOrderButtonEl.setAttribute("class", "btn btn-primary place-order-btn");
+  placeOrderButtonEl.textContent = "Place order";
+  placeOrderButtonEl.addEventListener("click", () => {
+    window.location.href = "/pages/success.html";
+    localStorage.removeItem("shoppingCartList");
+  });
+
+  cartBodyEl.appendChild(placeOrderButtonEl);
 };
 
 const buildShoppingCart = () => {
@@ -141,7 +186,10 @@ const buildShoppingCart = () => {
     "d-flex flex-column gap-5 p-3 overflow-y-auto"
   );
 
-  buildTotal(productsByCount);
+  if (productsInCart.length > 0) {
+    buildTotal(productsByCount);
+    buildFinalizeButton();
+  }
 };
 
 logoutIconEl.addEventListener("click", logout);
